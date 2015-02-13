@@ -1,0 +1,5 @@
+---
+- hosts: hypervisors
+  user: root
+  tasks:
+  - include: "{{ tasks }}/install-ovirt.yml"

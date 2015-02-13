@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  user: greg5320
+  sudo: yes
+  vars_files:
+    - vars/global.yml
+  tasks:
+  - include: "{{ tasks }}/setup-cobbler.yml"
+  handlers:
+  - include: "{{ handlers }}"
