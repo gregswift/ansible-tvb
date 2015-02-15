@@ -1,10 +1,31 @@
 ---
+action: ovirt >
+    instance_name=bootstrap
+    resource_type=new
+    instance_type=server
+    user={{ ovirt_user }}
+    password={{ ovirt_password }}
+    url={{ ovirt_api_uri }}
+    zone={{ ovirt_zone }}
+    region={{ ovirt_region }}
+    instance_cpus={{ instance_cpus }}
+    instance_nic={{ instance_nic }}
+    instance_network={{ ovirt_network }}
+    instance_disksize={{ instance_disksize }}
+    instance_mem={{ instance_mem }}
+    disk_alloc=preallocated
+    sdomain={{ ovirt_storage_domain }}
+    instance_cores=1
+    instance_os={{ instance_os }}
+    disk_int=virtio"
+
 - yum: name="{{ item }}" state=latest
   with_items:
     - cobbler
     - cobbler-web
     - httpd
     - dhcp
+    - tftp-server
 
 - service: name=cobblerd state=started enabled=yes
 - service: name=httpd state=started enabled=yes
@@ -13,6 +34,8 @@
 - command: cobbler sync
 
 - service: name=dhcpd state=started enabled=yes
+- service: name=tftp.socket state=started enabled=yes
+- service: name=tftp state=started enabled=yes
 
 - firewalld: service=http permanent=true state=enabled
   notify: reload firewalld

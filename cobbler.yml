@@ -2,8 +2,21 @@
 - hosts: localhost
   user: greg5320
   sudo: yes
+  vars:
+    - instance_cpus: 2
+    - instance_cores: 1
+    - instance_mem: 1024
+    - instance_nic: nic1
+    - instance_network: ovirtmgmt
+    - instance_disksize: 60
+    - instance_os: rhel_7x64
   vars_files:
     - vars/global.yml
+    - vars/ovirt.yml
+  vars_prompt:
+    - name: ovirt_password
+      prompt: "Password for oVirt user {{ ovirt_user }}?"
+      private: yes
   tasks:
   - include: "{{ tasks }}/setup-cobbler.yml"
   handlers:

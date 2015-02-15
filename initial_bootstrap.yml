@@ -1,0 +1,13 @@
+---
+# First, bootstrap oVirt node
+# Then build a virtual for cobbler named 'bootstrap'
+# Make the cobbler node usable for bootstrapping other nodes
+# Build new virtual for idm
+##### Manual configuration of idm?
+# Configure ovirt node to use IDM
+# Configure cobbler to use IDM
+# Build new virtual for gluster (large encrypted disk)
+# # Create a network share for home directories
+# # Create a network share for shared files
+# # Kick all the desktops - configured to use idm+gluster
+

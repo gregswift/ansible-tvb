@@ -1,0 +1,4 @@
+---
+- yum: name="{{ item }}" state=latest
+  with_items:
+    - "{{ global_pkgs_inst }}"

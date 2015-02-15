@@ -1,0 +1,24 @@
+---
+- yum: name=http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm state=installed
+
+- yum: name=ovirt-engine-setup-plugin-allinone state=latest
+
+- template: src="{{ templates }}/ovirt-engine.answers.j2" dest={{ ovirt_answers_file }}
+- command: engine-setup --config={{ ovirt_answers_file }} --jboss-home={{ ovirt_jboss_home }}
+           creates=/var/lib/ovirt-engine/engine.up
+
+- name: restart machine
+  command: shutdown -r now "Ansible updates triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+- name: waiting for server to come back
+  local_action: wait_for host={{ inventory_hostname }} state=started
+  sudo: false
+
+#- service: name=dhcpd state=started enabled=yes
+#- service: name=tftp.socket state=started enabled=yes
+
+#- firewalld: service=http permanent=true state=enabled
+#  notify: reload firewalld
