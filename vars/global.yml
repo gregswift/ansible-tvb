@@ -7,6 +7,7 @@ files: /etc/ansible/playbooks/vision/files
 roles: /etc/ansible/playbooks/vision/roles
 handlers: /etc/ansible/playbooks/vision/handlers/all.yml
 tasks: /etc/ansible/playbooks/vision/tasks
+templates: /etc/ansible/playbooks/vision/templates
 vars_path: "/etc/ansible/playbooks/vision/vars"
 
 # Set a default hostname base to transient. Override in host vars or command line.
@@ -16,8 +17,7 @@ root_auth_users: ""
 global_pkgs_inst: ['bind-utils', 'mailx', 'nc', 'openssh-clients', 
                    'patch', 'postfix', 'rsync', 'strace', 'nmap',
                    'tmpwatch', 'mtr', 'vim-enhanced', 'xz', 'nano',
-                   'libselinux-python', 'ntpdate', 'bash-completion',
-                   'htop' ]
+                   'libselinux-python', 'ntpdate', 'bash-completion' ]
 
 # sudo: False by default so ansible doesn't try and check for it and hang
 sudo: True
