@@ -14,7 +14,7 @@ vars_path: "/etc/ansible/playbooks/vision/vars"
 hostbase: transient
 # root_auth_users for cloud instances is '' by default
 root_auth_users: ""
-global_pkgs_inst: ['bind-utils', 'mailx', 'nc', 'openssh-clients', 
+global_pkgs_inst: ['bind-utils', 'openssh-clients', 'net-tools',
                    'patch', 'postfix', 'rsync', 'strace', 'nmap',
                    'tmpwatch', 'mtr', 'vim-enhanced', 'xz', 'nano',
                    'libselinux-python', 'ntpdate', 'bash-completion' ]

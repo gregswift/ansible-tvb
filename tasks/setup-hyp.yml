@@ -1,7 +1,10 @@
 ---
+- hostname: name={{ ansible_fqdn }}
+- lineinfile: dest=/etc/hosts regexp=" {{ ansible_hostname }} " line="{{ ansible_em1.ipv4.address }} {{ ansible_hostname}} {{ ansible_fqdn }}" owner=root group=root mode=0644
+
 - yum: name=http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm state=installed
 
-- yum: name=ovirt-engine-setup-plugin-allinone state=latest
+- yum: name=ovirt-engine-setup-plugin-allinone state=present
 
 - template: src="{{ templates }}/ovirt-engine.answers.j2" dest={{ ovirt_answers_file }}
 - command: engine-setup --config={{ ovirt_answers_file }} --jboss-home={{ ovirt_jboss_home }}
