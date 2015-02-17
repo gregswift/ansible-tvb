@@ -1,7 +1,5 @@
 ---
 - hosts: localhost
-  user: greg5320
-  sudo: yes
   vars:
     - instance_cpus: 2
     - instance_cores: 1
@@ -18,6 +16,16 @@
       prompt: "Password for oVirt user {{ ovirt_user }}?"
       private: yes
   tasks:
-  - include: "{{ tasks }}/setup-cobbler.yml"
+    - include: "{{ tasks }}/kick-cobbler.yml"
   handlers:
-  - include: "{{ handlers }}"
+    - include: "{{ handlers }}"
+
+- hosts: cobbler
+  user: root
+  vars_files:
+    - vars/global.yml
+    - vars/ovirt.yml
+  tasks:
+    - include: "{{ tasks }}/setup-cobbler.yml"
+  handlers:
+    - include: "{{ handlers }}"

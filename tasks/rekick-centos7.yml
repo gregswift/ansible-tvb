@@ -1,0 +1,12 @@
+---
+- yum: name=koan state=present
+
+- copy: src="{{ files }}/koan-utils.py" dest=/usr/lib/python2.7/site-packages/koan/utils.py mode
+
+- command: koan --replace-self
+
+- name: restart machine
+  command: shutdown -r now "Ansible updates triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
