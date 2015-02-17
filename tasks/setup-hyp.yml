@@ -10,15 +10,15 @@
 - command: engine-setup --config={{ ovirt_answers_file }} --jboss-home={{ ovirt_jboss_home }}
            creates=/var/lib/ovirt-engine/engine.up
 
-- name: restart machine
-  command: shutdown -r now "Ansible updates triggered"
-  async: 0
-  poll: 0
-  ignore_errors: true
+#- name: restart machine
+#  command: shutdown -r now "Ansible updates triggered"
+#  async: 0
+#  poll: 0
+#  ignore_errors: true
 
-- name: waiting for server to come back
-  local_action: wait_for host={{ inventory_hostname }} state=started
-  sudo: false
+#- name: waiting for server to come back
+#  local_action: wait_for host={{ inventory_hostname }} state=started
+#  sudo: false
 
 #- service: name=dhcpd state=started enabled=yes
 #- service: name=tftp.socket state=started enabled=yes
