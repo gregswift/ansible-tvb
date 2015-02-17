@@ -1,0 +1,7 @@
+---
+- hosts: hypervisors
+  user: root
+  vars_files:
+    - vars/global.yml
+  tasks:
+    - include: "{{ tasks }}/rekick-centos7.yml"

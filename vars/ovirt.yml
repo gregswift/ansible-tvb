@@ -1,7 +1,8 @@
 ovirt_user: admin@internal
-ovirt_api_uri: https://hyp-n01.buverde.todaysvision.com
-ovirt_zone: local
-ovirt_region: local
+ovirt_api_uri: https://172.16.254.1
+ovirt_zone: local_datacenter
+ovirt_region: local_cluster
 ovirt_storage_domain: local_storage
+ovirt_network: ovirtmgmt
 ovirt_answers_file: /root/ovirt-engine.answers
 ovirt_jboss_home: /usr/share/ovirt-engine-jboss-as
