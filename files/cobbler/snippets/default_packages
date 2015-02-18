@@ -1,0 +1,12 @@
+bind-utils
+openssh-clients
+postfix
+rsync
+strace
+nmap
+mtr
+nano
+xz
+libselinux-python
+bash-completion
+net-tools

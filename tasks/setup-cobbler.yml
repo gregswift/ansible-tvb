@@ -1,19 +1,47 @@
 ---
-- yum: name="{{ item }}" state=latest
+- name: do the evil thing
+  command: /sbin/setenforce 0
+
+- name: Install lvm2 since the base install is pretty bare
+  yum: name=lvm2 state=present
+- name: Enable lvmetad socket, because bare
+  service: name=lvm2-lvmetad.socket state=started enabled=yes
+
+- lvg: vg=data pvs=/dev/vdb
+- lvol: vg=data lv=cobbler size=100%FREE
+- filesystem: fstype=xfs dev=/dev/mapper/data-cobbler opts="-L cobbler"
+- file: path={{ cobbler_path }} state=directory owner=root group=root mode=0755
+- mount: name={{ cobbler_path }} src="LABEL=cobbler" fstype=xfs state=mounted
+
+- yum: name="{{ item }}" state=present
   with_items:
     - cobbler
     - cobbler-web
     - httpd
-    - dhcp
     - tftp-server
+
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^ ksdevice:" line=" ksdevice{{':'}} link"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^ lang:" line=" lang{{':'}} en_US"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^next_server:" line="next_server{{':'}} {{ ansible_eth0.ipv4.address }}"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^server:" line="server{{':'}} {{ ansible_eth0.ipv4.address }}"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^pxe_just_once:" line="pxe_just_once{{':'}} 1"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^register_new_installs:" line="register_new_installs{{':'}} 1"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^client_use_localhost:" line="client_use_localhost{{':'}} 1"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^default_password_crypted:" line="default_password_crypted{{':'}} {{ cobbler_default_password }}"
+
+- copy: src="{{ item }}" dest="{{ cobbler_lib }}/kickstarts/"
+  with_fileglob: "{{ files }}/cobbler/kickstarts/*.ks"
+  
+- copy: src="{{ item }}" dest="{{ cobbler_lib }}/snippets/"
+  with_fileglob: "{{ files }}/cobbler/snippets/*"
 
 - service: name=cobblerd state=started enabled=yes
 - service: name=httpd state=started enabled=yes
 
+- command: cobbler signature update
 - command: cobbler get-loaders
 - command: cobbler sync
 
-- service: name=dhcpd state=started enabled=yes
 - service: name=tftp.socket state=started enabled=yes
 - service: name=tftp state=started enabled=yes
 
@@ -21,7 +49,7 @@
   notify: reload firewalld
 - firewalld: service=https permanent=true state=enabled
   notify: reload firewalld
-- firewalld: service=dhcp permanent=true state=enabled
+- firewalld: service=dhcp permanent=true state=disabled
   notify: reload firewalld
 - firewalld: service=tftp permanent=true state=enabled
   notify: reload firewalld

@@ -1,31 +1,14 @@
 ---
-- hosts: localhost
-  vars:
-    - instance_cpus: 2
-    - instance_cores: 1
-    - instance_mem: 1024
-    - instance_nic: nic1
-    - instance_network: ovirtmgmt
-    - instance_disksize: 60
-    - instance_os: rhel_7x64
-  vars_files:
-    - vars/global.yml
-    - vars/ovirt.yml
-  vars_prompt:
-    - name: ovirt_password
-      prompt: "Password for oVirt user {{ ovirt_user }}?"
-      private: yes
-  tasks:
-    - include: "{{ tasks }}/kick-cobbler.yml"
-  handlers:
-    - include: "{{ handlers }}"
-
-- hosts: cobbler
+- hosts: bootstrap
   user: root
   vars_files:
     - vars/global.yml
+    - vars/cobbler.yml
     - vars/ovirt.yml
+    - vars/private.yml
   tasks:
+    - include: "{{ tasks }}/common.yml"
+    - include: "{{ tasks }}/centos.yml"
     - include: "{{ tasks }}/setup-cobbler.yml"
   handlers:
     - include: "{{ handlers }}"

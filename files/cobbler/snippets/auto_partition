@@ -1,0 +1,27 @@
+%include /tmp/partinfo
+
+%pre
+# Determine how many drives we have
+set \$(list-harddrives)
+let numd=\$#/2
+d1=\$1
+d2=\$3
+
+IGNORE_PART=""
+
+if [ "\${d2}" != "" ]; then
+  IGNORE_PART="ignoredisk --drives=\$d2"
+fi
+
+cat << EOF > /tmp/partinfo
+# System bootloader configuration
+bootloader --location=mbr --driveorder=\$d1
+
+# Partition clearing information
+clearpart --all --initlabel --drives=\$d1
+\$IGNORE_PART
+
+# Define system partitions
+autopart --type=plain 
+EOF
+%end

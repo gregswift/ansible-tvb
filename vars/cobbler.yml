@@ -1,0 +1,3 @@
+cobbler_path: /var/www/cobbler
+cobbler_settings: /etc/cobbler/settings
+cobbler_lib: /var/lib/cobbler
