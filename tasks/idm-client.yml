@@ -1,0 +1,40 @@
+---
+
+- name: Install ipa-client packages
+  yum: name=ipa-client state=present
+
+- name: Add firewall rules
+  firewalld: name={{ item }} state=enabled
+  with_items:
+    - kpasswd
+    - ntp
+
+- name: Configure LDAP lookups for sudo (1/2)
+  lineinfile: "dest=/etc/nsswitch.conf regexp='sudoers: files ldap' insertafter=EOF line='sudoers: files ldap'"
+- name: Configure LDAP lookups for sudo (2/2)
+  lineinfile: "dest=/etc/rc.d/rc.local regexp='nisdomainname {{ ansible_domain }}' insertafter=EOF line='nisdomainname {{ ansible_domain }}'"
+- name: Configure LDAP binding for the sudo lookup
+  lineinfile: "dest=/etc/sudo-ldap.conf regexp='{{ item }}' insertafter=EOF line='{{ item }}'"
+  with_items:
+    - binddn
+    - uid=sudo,cn=sysaccounts,cn=etc,dc={{ ipa_dc1 }},dc={{ ipa_dc0 }}
+    - bindpw {{ password }}
+    - ssl start_tls
+    - tls_cacertfile {{ ipa_cacertfile }}
+    - tls_checkpeer yes
+    - uri ldaps://{{ ipa_server }}
+    - sudoers_base ou=SUDOers,dc={{ ipa_dc1 }},dc={{ ipa_dc0 }}
+    - bind_timelimit 5
+    - timelimit 10
+
+- name: Enroll IPA client to IPA server unattended
+  command:
+    {{ ipa_client_install }}
+    -p {{ vault_ipa_admin_user }}
+    -w {{ vault_ipa_admin_password }}
+    --enable-dns-updates
+    --hostname={{ ansible_fqdn }}
+    --server {{ ipa_server }}
+    --domain {{ ansible_domain }}
+    --realm {{ ipa_realm }}
+    {{ '--mkhomedir' if ipa_mkhomedir | default(True) else '' }}

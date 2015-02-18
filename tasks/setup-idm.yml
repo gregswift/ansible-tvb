@@ -1,0 +1,59 @@
+---
+- name: Hard set the hostname
+  hostname: name={{ ansible_fqdn }}
+
+- name: Add host entry
+  lineinfile:
+    dest=/etc/hosts
+    regexp=" {{ ansible_hostname }} "
+    line="{{ ansible_eth0.ipv4.address }} {{ ansible_fqdn }}"
+    owner=root
+    group=root
+    mode=0644
+
+- name: Ensure software is installed
+  yum: name={{ item }} state=present
+  with_items: ipa_packages
+
+- name: Run the installer
+  action: command
+    {{ ipa_base_command }}
+    --realm {{ ipa_realm }}
+    --domain {{ ipa_domain }}
+    -a {{ ipa_admin_password }}
+    -p {{ ipa_dir_admin_password }}
+    --hostname={{ ansible_fqdn }}
+    --ip-address={{ ansible_eth0.ipv4.address }}
+    {{ '--idstart=%s' % ipa_idstart if ipa_idstart | default(False) else '' }}
+    {{ '--idmax=%s' % ipa_idmax if ipa_idmax | default(False) else '' }}
+    {{ '--forwarder=%s' % ipa_dns_forwarder
+       if ipa_dns_forwarder | default(False) else '--no-forwarders' }}
+    {{ '--mkhomedir' if ipa_mkhomedir | default(True) else '' }}
+    {{ '--setup-dns' if ipa_setup_dns | default(True) else '' }}
+    {{ '--ssh-trust-dns' if ipa_ssh_trust_dns | default(True) else '' }}
+    {{ '' if ipa_hbac_allow | default(True) else '--no_hbac_allow' }}
+    {{ '' if ipa_setup_ntp | default(True) else '--no-ntp' }}
+    {{ '' if ipa_configure_ssh | default(True) else '--no-ssh' }}
+    {{ '' if ipa_configure_sshd | default(True) else '--no-sshd' }}
+    {{ '' if ipa_ui_redirect | default(True) else '--no-ui-redirect' }}
+    creates=/etc/ipa/default.conf
+
+- name: Enable the LDAPS firewalld ruleset provided by freeipa 
+  firewalld: service=freeipa-ldaps permanent=true state=enabled
+  notify: reload firewalld
+  when: ansible_distribution == "Fedora"
+
+- name: Enable the individual rulesets for CentOS 
+  firewalld: service={{ item }} permanent=true state=enabled
+  with_items:
+    - https
+    - ldaps
+    - kerberos
+    - kpasswd
+    - dns
+    - ntp
+  notify: reload firewalld
+  when: ansible_distribution != "Fedora" and ansible_os_family == "RedHat"
+
+# ipa dnszone-add  0.16.172.in-addr.arpa.--name-server=idm-n01.bulverde.todaysvision.com. --admin-email=gregswift@gmail.com
+# ipa user-add gregswift --first Greg --last Swift --initials gls --email gregswift@gmail.com 

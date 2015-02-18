@@ -1,0 +1,22 @@
+---
+- hosts: idm
+  user: root
+  vars_files:
+    - vars/global.yml
+    - vars/idm.yml
+    - vars/private-idm.yml
+  vars_prompt:
+    - name: ipa_admin_password
+      prompt: "What should the admin password be for IPA?"
+      private: yes
+      default: "{{ vault_ipa_admin_password }}"
+    - name: ipa_dir_admin_password
+      prompt: "What should the admin password be for the Directory Server?"
+      private: yes
+      default: "{{ vault_ipa_dir_admin_password }}"
+  tasks:
+  - include: "{{ tasks }}/common.yml"
+  - include: "{{ tasks }}/centos.yml"
+  - include: "{{ tasks }}/setup-idm.yml"
+  handlers:
+  - include: "{{ handlers }}"
