@@ -36,7 +36,7 @@ parted /dev/$disk_device align-check optimal 2
 
 # set passphrase for encrypted luks device
 # could also use something like https://myhost/genpass.php
-mypass="W2335Y9j3Qoqgqjq"
+mypass="iclearedthatoldoneout-thisisntvalideither"
 echo "mypass: $mypass"
 echo ""
 
