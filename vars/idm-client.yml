@@ -1,0 +1,12 @@
+ipa_packages:
+  - ipa-client
+ipa_client_base_command: ipa-client-install -U
+ipa_realm: BULVERDE.TODAYSVISION.COM
+ipa_domain: bulverde.todaysvision.com
+ipa_dc0: com 
+ipa_dc1: todaysvision
+ipa_server: idm-n01.bulverde.todaysvision.com
+ipa_mkhomedir: True
+ipa_setup_dns: True
+ipa_ssh_trust_dns: True
+ipa_cacertfile: /etc/ipa/ca.crt

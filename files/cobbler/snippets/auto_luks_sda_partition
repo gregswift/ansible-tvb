@@ -1,0 +1,8 @@
+# System bootloader configuration
+bootloader --location=mbr --driveorder=sda
+
+# Partition clearing information
+clearpart --all --initlabel --drives=sda
+
+# Define system partitions
+autopart --encrypt --passphrase=
