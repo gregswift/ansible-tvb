@@ -5,6 +5,9 @@ ipa_packages:
 ipa_base_command: ipa-server-install -U 
 ipa_realm: BULVERDE.TODAYSVISION.COM
 ipa_domain: bulverde.todaysvision.com
+ipa_dc0: com
+ipa_dc1: todaysvision
+ipa_server: idm-n01.bulverde.todaysvision.com
 ipa_mkhomedir: True
 ipa_setup_dns: True
 ipa_ssh_trust_dns: True
@@ -16,7 +19,4 @@ ipa_dns_forwarder: 8.8.8.8
 ipa_configure_ssh: True
 ipa_configure_sshd: True
 ipa_ui_redirect: True
-ipa_dc0: com
-ipa_dc1: todaysvision
-ipa_server: idm-n01.bulverde.todaysvision.com
 ipa_cacertfile: /etc/ipa/ca.crt
