@@ -1,3 +1,11 @@
 cobbler_path: /var/www/cobbler
+cobbler_configs: /etc/cobbler
 cobbler_settings: /etc/cobbler/settings
 cobbler_lib: /var/lib/cobbler
+cobbler_repos_to_sync:
+  - name: fedora-21-everything-64
+    url: http://mirror.rackspace.com/fedora/releases/21/Everything/x86_64/os/
+    arch: x86_64
+  - name: epel-7-64
+    url: http://dl.fedoraproject.org/pub/epel/7/x86_64/
+    arch: x86_64

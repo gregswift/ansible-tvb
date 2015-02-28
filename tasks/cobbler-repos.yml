@@ -1,0 +1,4 @@
+---
+- name: Add repos to sync
+  command: cobbler repo add --name="{{ item.name }}" --mirror="{{ item.url }}" --arch="{{ item.arch }}" creates="{{ cobbler_lib }}/config/repos.d/{{ item.name }}.json"
+  with_items: cobbler_repos_to_sync

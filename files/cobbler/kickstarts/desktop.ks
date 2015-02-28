@@ -5,14 +5,6 @@
 #platform=x86, AMD64, or Intel EM64T
 # System authorization information
 auth  --useshadow  --enablemd5
-# System bootloader configuration
-bootloader --location=mbr --boot-drive=sda
-# Partition clearing information
-# DO NOT CLEARPART
-#clearpart --none --initlabel --drives=sda
-# don't use clearpart as that would wipe the partitions created in %pre
-part /boot --asprimary --fstype="ext4" --ondisk=sda --onpart=sda1 --size=500 --grow --label=/boot
-%include /tmp/part-include
 # Use text mode install
 text
 # Firewall configuration
@@ -34,19 +26,18 @@ reboot
 
 #Root password
 rootpw --iscrypted $default_password_crypted
-# SELinux configuration
-selinux --disabled
 # X Window System configuration information
 xconfig  --startxonboot
 # System timezone
-timezone  America/Central --isUtc
+timezone  America/Central --utc
 # Install OS instead of upgrade
 install
 # Clear the Master Boot Record
 zerombr
 
+$SNIPPET('auto_luks_sda_partition')
+
 %pre
-$SNIPPET('pre_luks')
 $SNIPPET('log_ks_pre')
 $SNIPPET('kickstart_start')
 $SNIPPET('pre_install_network_config')
@@ -57,6 +48,7 @@ $SNIPPET('pre_anamon')
 %packages
 $SNIPPET('func_install_if_enabled')
 $SNIPPET('default_packages')
+$SNIPPET('desktop_packages')
 %end
 
 %post --nochroot

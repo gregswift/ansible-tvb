@@ -20,21 +20,36 @@
     - httpd
     - tftp-server
 
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^ ksdevice:" line=" ksdevice{{':'}} link"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^ lang:" line=" lang{{':'}} en_US"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^next_server:" line="next_server{{':'}} {{ ansible_eth0.ipv4.address }}"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^server:" line="server{{':'}} {{ ansible_eth0.ipv4.address }}"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^pxe_just_once:" line="pxe_just_once{{':'}} 1"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^register_new_installs:" line="register_new_installs{{':'}} 1"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^client_use_localhost:" line="client_use_localhost{{':'}} 1"
-- lineinfile: dest="{{ cobbler_settings }}" regexp="^default_password_crypted:" line="default_password_crypted{{':'}} {{ cobbler_default_password }}"
+- lineinfile: dest="{{ cobbler_settings }}" regexp="^{{ item.name }}:" line="{{ item.name }}{{':'}} {{ item.value }}"
+  with_items:
+    - { name: "ksdevice", value: "link" }
+    - { name: "lang", value: "en_US" }
+    - { name: "next_server", value: "{{ ansible_eth0.ipv4.address }}" }
+    - { name: "server", value: "{{ ansible_eth0.ipv4.address }}" }
+    - { name: "default_password_crypted", value: "{{ cobbler_default_password }}" }
+    - { name: "reposync_flags", value: "-n -n -d -m" }
+    - { name: "manage_dhcp", value: 1 }
+    - { name: "pxe_just_once", value: 1 }
+    - { name: "register_new_installs", value: 1 }
+    - { name: "client_use_localhost", value: 1 }
+  notify: restart cobblerd
+
+- copy: src="{{ files }}/cobbler/dhcp.template" dest="{{ cobbler_configs }}/"
+  notify: sync cobbler
 
 - copy: src="{{ item }}" dest="{{ cobbler_lib }}/kickstarts/"
   with_fileglob: "{{ files }}/cobbler/kickstarts/*.ks"
+  notify: sync cobbler
   
 - copy: src="{{ item }}" dest="{{ cobbler_lib }}/snippets/"
   with_fileglob: "{{ files }}/cobbler/snippets/*"
+  notify: sync cobbler
 
+- command: setsebool -P {{ item}} true
+  with_items:
+    - httpd_can_network_connect
+    - httpd_serve_cobbler_files
+    - cobbler_can_network_connect
 - service: name=cobblerd state=started enabled=yes
 - service: name=httpd state=started enabled=yes
 
@@ -44,14 +59,15 @@
 
 - service: name=tftp.socket state=started enabled=yes
 - service: name=tftp state=started enabled=yes
+- service: name=dhcpd state=started enabled=yes
 
-- firewalld: service=http permanent=true state=enabled
+- firewalld: service={{ item }} permanent=true state=enabled
+  with_items:
+    - http
+    - https
+    - dhcp
+    - tftp
   notify: reload firewalld
-- firewalld: service=https permanent=true state=enabled
-  notify: reload firewalld
-- firewalld: service=dhcp permanent=true state=disabled
-  notify: reload firewalld
-- firewalld: service=tftp permanent=true state=enabled
-  notify: reload firewalld
+
 - firewalld: port=25151/tcp permanent=true state=enabled
   notify: reload firewalld

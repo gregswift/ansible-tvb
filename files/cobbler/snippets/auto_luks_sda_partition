@@ -5,4 +5,4 @@ bootloader --location=mbr --driveorder=sda
 clearpart --all --initlabel --drives=sda
 
 # Define system partitions
-autopart --encrypt --passphrase=
+autopart --encrypt --passphrase=$luks_passphrase

@@ -1,0 +1,26 @@
+%include /tmp/partinfo
+
+%pre
+
+# find disk device in system - first found, first used
+disk_device=""
+for file in 'sda' 'hda' 'vda'; do
+        if [ -e "/sys/block/\$file" ]; then
+                disk_device="\$file"
+                break
+        fi
+echo "Found disk device: \$disk_device"
+done
+
+cat << EOF > /tmp/partinfo
+# System bootloader configuration
+bootloader --location=mbr --driveorder=\$disk_device
+
+# Partition clearing information
+clearpart --all --initlabel --drives=\$disk_device
+
+# Define system partitions
+autopart --encrypt --passphrase=$luks_passphrase
+EOF
+
+%end

@@ -1,3 +1,9 @@
 ---
 - name: reload firewalld
   command: firewall-cmd --reload
+
+- name: sync cobbler
+  command: cobbler sync
+
+- name: restart cobblerd
+  service: name=cobblerd state=restarted
