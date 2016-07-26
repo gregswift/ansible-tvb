@@ -3,12 +3,12 @@ basedir: /etc/ansible
 private: /etc/ansible/private
 puppet_private: /var/lib/puppet/git/configs/secure
 bigfiles: /etc/ansible/bigfiles
-files: /etc/ansible/playbooks/vision/files
-roles: /etc/ansible/playbooks/vision/roles
-handlers: /etc/ansible/playbooks/vision/handlers/all.yml
-tasks: /etc/ansible/playbooks/vision/tasks
-templates: /etc/ansible/playbooks/vision/templates
-vars_path: "/etc/ansible/playbooks/vision/vars"
+files: /home/xaeth/Development/ansible/playbooks/tvb/files
+roles: /home/xaeth/Development/ansible/playbooks/tvb/roles
+handlers: /home/xaeth/Development/ansible/playbooks/tvb/handlers/all.yml
+tasks: /home/xaeth/Development/ansible/playbooks/tvb/tasks
+templates: /home/xaeth/Development/ansible/playbooks/tvb/templates
+vars_path: "/home/xaeth/Development/ansible/playbooks/tvb/vars"
 
 # Set a default hostname base to transient. Override in host vars or command line.
 hostbase: transient
