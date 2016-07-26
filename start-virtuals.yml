@@ -1,0 +1,20 @@
+---
+- hosts: hypervisors
+  user: root
+  vars_files:
+    - vars/global.yml
+    - vars/ovirt.yml
+    - vars/common.private.yml
+  vars_prompt:
+    - name: ovirt_password
+      prompt: "What should the admin password be for oVirt Engine?"
+      private: yes
+  tasks:
+    - name: Start virtuals
+      ovirt:
+        user: "{{ ovirt_user }}"
+        password: "{{ ovirt_password }}"
+        url: "{{ ovirt_api_uri }}"
+        instance_name: "{{ item }}"
+        state: started
+      with_items: ovirt_virtuals
