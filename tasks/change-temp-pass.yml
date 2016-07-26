@@ -1,0 +1,4 @@
+---
+- user: name=temp update_password=always password={{ temp_password }}
+  tags:
+    - passwords

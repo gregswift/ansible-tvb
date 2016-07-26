@@ -1,0 +1,36 @@
+---
+- name: Ensure necessary software is installed to allow network access
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - libsmbclient
+    - samba-client
+    - libwbclient
+    - cifs-utils
+
+- name: Place samba credentials file for the desktop user
+  template:
+    state: present
+    src: "{{ templates }}/credentials.j2"
+    dest: /etc/samba/.credentials
+    owner: root
+    group: root
+    mode: 0640
+    
+- name: Add scanner mountpoint to /etc/fstab
+  mount:
+    name: /mnt/scanner
+    state: present
+    src: '//storage-n01/scanner'
+    fstype: cifs
+    opts: 'credentials=/etc/samba/.credentials,uid=1000,gid=1000'
+    
+- name: Update gnome3 bookmarks
+  copy:
+    src: "{{ files }}/g3bookmarks.desktop"
+    dest: /home/temp/.config/gtk-3.0/bookmarks
+    owner: temp
+    group: temp
+    mode: 0664
+

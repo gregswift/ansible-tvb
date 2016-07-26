@@ -1,0 +1,10 @@
+---
+- hosts: desktops
+  user: root
+  vars_files:
+    - vars/global.yml
+    - vars/common.private.yml
+  tasks:
+  - include: "{{ tasks }}/common.yml"
+  - include: "{{ tasks }}/change-temp-pass.yml"
+  - include: "{{ tasks }}/configure-network-mounts.yml"
