@@ -9,7 +9,7 @@
   tasks:
     - include: "{{ tasks }}/common.yml"
     - include: "{{ tasks }}/centos.yml"
-    - include: "{{ tasks }}/idm-client.yml"
+    #- include: "{{ tasks }}/idm-client.yml"
     #- include: "{{ tasks }}/setup-gluster.yml"
   handlers:
     - include: "{{ handlers }}"
