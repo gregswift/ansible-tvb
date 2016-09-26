@@ -1,0 +1,7 @@
+---
+- user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    update_password: always
+  tags:
+    - passwords
