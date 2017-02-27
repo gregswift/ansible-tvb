@@ -8,6 +8,7 @@
     - samba-client
     - libwbclient
     - cifs-utils
+    - glusterfs-fuse
 
 - name: Place samba credentials file for the desktop user
   template:
@@ -17,15 +18,34 @@
     owner: root
     group: root
     mode: 0640
-    
-- name: Add scanner mountpoint to /etc/fstab
-  mount:
-    name: /mnt/scanner
+
+- name: Ensure directories exist
+  file:
+    path: "{{ item }}"
+    ensure: directory
     state: present
-    src: '//storage-n01/scanner'
-    fstype: cifs
-    opts: 'credentials=/etc/samba/.credentials,uid=1000,gid=1000'
-    
+  with_items:
+    - /scanner
+    - /backups
+
+- name: Add mountpoints to /etc/fstab
+  mount:
+    name: "{{ item.path }}"
+    state: present
+    src: "{{ item.src }}"
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts | default('') }}"
+  with_dict:
+    scanner:
+      path: /scanner
+      src: '//storage-n01/scanner'
+      fstype: cifs
+      opts: 'credentials=/etc/samba/.credentials,uid=1000,gid=1000'
+    backups:
+      path: /backups
+      src: 'storage-n01:/backups'
+      fstype: glusterfs
+
 - name: Update gnome3 bookmarks
   copy:
     src: "{{ files }}/g3bookmarks.desktop"
@@ -33,4 +53,3 @@
     owner: temp
     group: temp
     mode: 0664
-

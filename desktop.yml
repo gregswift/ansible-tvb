@@ -6,5 +6,5 @@
     - vars/common.private.yml
   tasks:
   - include: "{{ tasks }}/common.yml"
-  - include: "{{ tasks }}/change-temp-pass.yml"
+  - include: "{{ tasks }}/change-user-pass.yml"
   - include: "{{ tasks }}/configure-network-mounts.yml"
