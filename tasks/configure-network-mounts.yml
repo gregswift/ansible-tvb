@@ -1,6 +1,6 @@
 ---
 - name: Ensure necessary software is installed to allow network access
-  yum:
+  package:
     name: "{{item}}"
     state: present
   with_items:
@@ -12,7 +12,6 @@
 
 - name: Place samba credentials file for the desktop user
   template:
-    state: present
     src: "{{ templates }}/credentials.j2"
     dest: /etc/samba/.credentials
     owner: root
