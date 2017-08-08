@@ -7,9 +7,9 @@
     - vars/gluster.yml
     - vars/private.yml
   tasks:
-    - include: "{{ tasks }}/common.yml"
-    - include: "{{ tasks }}/centos.yml"
-    #- include: "{{ tasks }}/idm-client.yml"
-    #- include: "{{ tasks }}/setup-gluster.yml"
+    - include: "{{ path.tasks }}/common.yml"
+    - include: "{{ path.tasks }}/centos.yml"
+    #- include: "{{ path.tasks }}/idm-client.yml"
+    #- include: "{{ path.tasks }}/setup-gluster.yml"
   handlers:
-    - include: "{{ handlers }}"
+    - include: "{{ path.handlers }}"

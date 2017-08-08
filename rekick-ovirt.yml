@@ -4,4 +4,4 @@
   vars_files:
     - vars/global.yml
   tasks:
-    - include: "{{ tasks }}/rekick-centos7.yml"
+    - include: "{{ path.tasks }}/rekick-centos7.yml"

@@ -7,9 +7,9 @@
     - vars/ovirt.yml
     - vars/private.yml
   tasks:
-    - include: "{{ tasks }}/common.yml"
-    - include: "{{ tasks }}/centos.yml"
-    - include: "{{ tasks }}/setup-cobbler.yml"
-    - include: "{{ tasks }}/cobbler-repos.yml"
+    - include: "{{ path.tasks }}/common.yml"
+    - include: "{{ path.tasks }}/centos.yml"
+    - include: "{{ path.tasks }}/setup-cobbler.yml"
+    - include: "{{ path.tasks }}/cobbler-repos.yml"
   handlers:
-    - include: "{{ handlers }}"
+    - include: "{{ path.handlers }}"

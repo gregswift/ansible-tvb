@@ -1,7 +1,7 @@
 ---
 - yum: name=koan state=present
 
-- copy: src="{{ files }}/koan-utils.py" dest=/usr/lib/python2.7/site-packages/koan/utils.py mode
+- copy: src="{{ path.files }}/koan-utils.py" dest=/usr/lib/python2.7/site-packages/koan/utils.py mode
 
 - command: koan --replace-self
 

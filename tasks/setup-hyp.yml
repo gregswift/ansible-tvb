@@ -6,7 +6,7 @@
 
 - yum: name=ovirt-engine-setup-plugin-allinone state=present
 
-- template: src="{{ templates }}/ovirt-engine.answers.j2" dest={{ ovirt_answers_file }}
+- template: src="{{ path.templates }}/ovirt-engine.answers.j2" dest={{ ovirt_answers_file }}
 - command: engine-setup --config={{ ovirt_answers_file }} --jboss-home={{ ovirt_jboss_home }}
            creates=/var/lib/ovirt-engine/engine.up
 

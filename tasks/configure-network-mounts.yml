@@ -12,7 +12,7 @@
 
 - name: Place samba credentials file for the desktop user
   template:
-    src: "{{ templates }}/credentials.j2"
+    src: "{{ path.templates }}/credentials.j2"
     dest: /etc/samba/.credentials
     owner: root
     group: root
@@ -47,7 +47,7 @@
 
 - name: Update gnome3 bookmarks
   copy:
-    src: "{{ files }}/g3bookmarks.desktop"
+    src: "{{ path.files }}/g3bookmarks.desktop"
     dest: /home/temp/.config/gtk-3.0/bookmarks
     owner: temp
     group: temp

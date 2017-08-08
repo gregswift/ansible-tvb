@@ -15,9 +15,9 @@
       private: yes
       default: "{{ vault_ipa_dir_admin_password }}"
   tasks:
-    - include: "{{ tasks }}/common.yml"
-    - include: "{{ tasks }}/centos.yml"
+    - include: "{{ path.tasks }}/common.yml"
+    - include: "{{ path.tasks }}/centos.yml"
   roles:
     - ipaserver
   handlers:
-  - include: "{{ handlers }}"
+  - include: "{{ path.handlers }}"

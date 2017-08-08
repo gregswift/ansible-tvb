@@ -34,15 +34,15 @@
     - { name: "client_use_localhost", value: 1 }
   notify: restart cobblerd
 
-- copy: src="{{ files }}/cobbler/dhcp.template" dest="{{ cobbler_configs }}/"
+- copy: src="{{ path.files }}/cobbler/dhcp.template" dest="{{ cobbler_configs }}/"
   notify: sync cobbler
 
 - copy: src="{{ item }}" dest="{{ cobbler_lib }}/kickstarts/"
-  with_fileglob: "{{ files }}/cobbler/kickstarts/*.ks"
+  with_fileglob: "{{ path.files }}/cobbler/kickstarts/*.ks"
   notify: sync cobbler
   
 - copy: src="{{ item }}" dest="{{ cobbler_lib }}/snippets/"
-  with_fileglob: "{{ files }}/cobbler/snippets/*"
+  with_fileglob: "{{ path.files }}/cobbler/snippets/*"
   notify: sync cobbler
 
 - command: setsebool -P {{ item}} true

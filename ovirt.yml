@@ -9,8 +9,8 @@
       prompt: "What should the admin password be for oVirt Engine?"
       private: yes
   tasks:
-  - include: "{{ tasks }}/common.yml"
-  - include: "{{ tasks }}/centos.yml"
-  - include: "{{ tasks }}/setup-hyp.yml"
+  - include: "{{ path.tasks }}/common.yml"
+  - include: "{{ path.tasks }}/centos.yml"
+  - include: "{{ path.tasks }}/setup-hyp.yml"
   handlers:
-  - include: "{{ handlers }}"
+  - include: "{{ path.handlers }}"

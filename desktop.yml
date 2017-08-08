@@ -5,6 +5,6 @@
     - vars/global.yml
     - vars/common.private.yml
   tasks:
-  - include: "{{ tasks }}/common.yml"
-  - include: "{{ tasks }}/change-user-pass.yml"
-  - include: "{{ tasks }}/configure-network-mounts.yml"
+  - include: "{{ path.tasks }}/common.yml"
+  - include: "{{ path.tasks }}/change-user-pass.yml"
+  - include: "{{ path.tasks }}/configure-network-mounts.yml"

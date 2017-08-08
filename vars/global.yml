@@ -1,14 +1,9 @@
 ---
-basedir: /etc/ansible
-private: /etc/ansible/private
-puppet_private: /var/lib/puppet/git/configs/secure
-bigfiles: /etc/ansible/bigfiles
-files: ~/ansible/playbooks/tvb/files
-roles: ~/ansible/playbooks/tvb/roles
-handlers: ~/ansible/playbooks/tvb/handlers/all.yml
-tasks: ~/ansible/playbooks/tvb/tasks
-templates: ~/ansible/playbooks/tvb/templates
-vars_path: "~/ansible/playbooks/tvb/vars"
+path:
+  files: ~/ansible/playbooks/tvb/files
+  handlers: ~/ansible/playbooks/tvb/handlers/all.yml
+  tasks: ~/ansible/playbooks/tvb/tasks
+  templates: ~/ansible/playbooks/tvb/templates
 
 # Set a default hostname base to transient. Override in host vars or command line.
 hostbase: transient
