@@ -21,19 +21,18 @@
 - name: Ensure directories exist
   file:
     path: "{{ item }}"
-    ensure: directory
-    state: present
+    state: directory
   with_items:
     - /server
     - /backups
 
 - name: Add mountpoints to /etc/fstab
   mount:
-    name: "{{ item.path }}"
+    name: "{{ item.value.path }}"
     state: present
-    src: "{{ item.src }}"
-    fstype: "{{ item.fstype }}"
-    opts: "{{ item.opts | default('') }}"
+    src: "{{ item.value.src }}"
+    fstype: "{{ item.value.fstype }}"
+    opts: "{{ item.value.opts | default('') }}"
   with_dict:
     server:
       path: /server
