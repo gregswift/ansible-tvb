@@ -24,7 +24,7 @@
     ensure: directory
     state: present
   with_items:
-    - /scanner
+    - /server
     - /backups
 
 - name: Add mountpoints to /etc/fstab
@@ -35,8 +35,8 @@
     fstype: "{{ item.fstype }}"
     opts: "{{ item.opts | default('') }}"
   with_dict:
-    scanner:
-      path: /scanner
+    server:
+      path: /server
       src: '//storage-n01/scanner'
       fstype: cifs
       opts: 'credentials=/etc/samba/.credentials,uid=1000,gid=1000'
