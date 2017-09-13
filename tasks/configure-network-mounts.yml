@@ -43,6 +43,7 @@
       path: /backups
       src: 'storage-n01:/backups'
       fstype: glusterfs
+      opts: defaults
 
 - name: Update gnome3 bookmarks
   copy:
