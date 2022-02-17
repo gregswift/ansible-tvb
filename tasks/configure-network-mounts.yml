@@ -19,7 +19,7 @@
     mode: 0640
 
 - name: Ensure directories exist
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
   with_items:
@@ -48,7 +48,7 @@
 - name: Update gnome3 bookmarks
   copy:
     src: "{{ path.files }}/g3bookmarks.desktop"
-    dest: /home/temp/.config/gtk-3.0/bookmarks
-    owner: temp
-    group: temp
+    dest: /home/user/.config/gtk-3.0/bookmarks
+    owner: user
+    group: user
     mode: 0664

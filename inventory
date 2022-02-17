@@ -1,0 +1,14 @@
+[all:children]
+desktops
+#servers
+
+[desktops:children]
+linux_desktops
+
+[linux_desktops]
+lab-n01 ansible_user=root ansible_host=172.16.0.115 
+#test-n01 ansible_user=root ansible_host=172.16.0.116
+front-n01 ansible_user=root ansible_host=172.16.0.117
+front-n02 ansible_user=root ansible_host=172.16.0.118
+#lame-n01 ansible_user=root ansible_host=172.16.0.119
+lane-n02 ansible_user=root ansible_host=172.16.0.120

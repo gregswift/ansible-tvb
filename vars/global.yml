@@ -12,7 +12,7 @@ root_auth_users: ""
 global_pkgs_inst: ['bind-utils', 'openssh-clients', 'net-tools', 'lsof',
                    'patch', 'postfix', 'rsync', 'strace', 'nmap',
                    'tmpwatch', 'mtr', 'vim-enhanced', 'xz', 'nano',
-                   'libselinux-python', 'ntpdate', 'bash-completion' ]
+                   'python3-libselinux', 'bash-completion' ]
 
 # sudo: False by default so ansible doesn't try and check for it and hang
 sudo: True

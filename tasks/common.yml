@@ -1,7 +1,7 @@
 ---
 - authorized_key:
     user: root
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/id_ecdsa.pub') }}"
   tags:
     - common
     - ssh
@@ -14,3 +14,11 @@
   tags:
     - common
     - packages
+
+- name: "Add hosts from inventory to /etc/hosts"
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item].ansible_host }} {{ item }}"
+    state: present
+  with_items: "{{ groups['all'] }}"
