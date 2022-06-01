@@ -6,11 +6,9 @@
     - common
     - ssh
 
-- yum:
-    name: "{{ item }}"
+- ansible.builtin.package:
+    name: "{{ global_pkgs_inst }}"
     state: present
-  with_items:
-    - "{{ global_pkgs_inst }}"
   tags:
     - common
     - packages
@@ -21,4 +19,7 @@
     regexp: '.*{{ item }}$'
     line: "{{ hostvars[item].ansible_host }} {{ item }}"
     state: present
-  with_items: "{{ groups['all'] }}"
+  loop: "{{ groups['all'] }}"
+  tags:
+    - common
+    - hostfile

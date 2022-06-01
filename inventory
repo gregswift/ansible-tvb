@@ -1,14 +1,27 @@
+[music_hosts]
+music ansible_host=172.16.0.25
+
 [all:children]
 desktops
 #servers
 
+[gluster:children]
+gluster_linux_desktops
+
 [desktops:children]
 linux_desktops
+gluster_linux_desktops
 
 [linux_desktops]
+billing-n01 ansible_user=root ansible_host=172.16.0.114
+test-n01 ansible_user=root ansible_host=172.16.0.116
+
+[gluster_linux_desktops]
 lab-n01 ansible_user=root ansible_host=172.16.0.115 
-#test-n01 ansible_user=root ansible_host=172.16.0.116
 front-n01 ansible_user=root ansible_host=172.16.0.117
 front-n02 ansible_user=root ansible_host=172.16.0.118
-#lame-n01 ansible_user=root ansible_host=172.16.0.119
 lane-n02 ansible_user=root ansible_host=172.16.0.120
+
+[windows_desktops]
+lane-n01 ansible_host=172.16.0.119
+

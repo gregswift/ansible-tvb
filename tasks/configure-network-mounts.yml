@@ -20,30 +20,18 @@
 
 - name: Ensure directories exist
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "/mnt/{{ item.volume }}"
     state: directory
-  with_items:
-    - /server
-    - /backups
+  loop: "{{ gluster_volumes }}"
 
 - name: Add mountpoints to /etc/fstab
   mount:
-    name: "{{ item.value.path }}"
+    name: "/mnt/{{ item.volume }}"
     state: present
-    src: "{{ item.value.src }}"
-    fstype: "{{ item.value.fstype }}"
-    opts: "{{ item.value.opts | default('') }}"
-  with_dict:
-    server:
-      path: /server
-      src: '//storage-n01/scanner'
-      fstype: cifs
-      opts: 'credentials=/etc/samba/.credentials,uid=1000,gid=1000'
-    backups:
-      path: /backups
-      src: 'storage-n01:/backups'
-      fstype: glusterfs
-      opts: defaults
+    src: "localhost:/{{ item.volume }}"
+    fstype: glusterfs
+    opts: defaults
+  loop: "{{ gluster_volumes }}"
 
 - name: Update gnome3 bookmarks
   copy:

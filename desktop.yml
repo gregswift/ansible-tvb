@@ -4,8 +4,11 @@
   user: root
   vars_files:
     - vars/global.yml
+    - vars/gluster.yml
     - vars/common.private.yml
   tasks:
   - include: "{{ path.tasks }}/common.yml"
   - include: "{{ path.tasks }}/change-user-pass.yml"
   - include: "{{ path.tasks }}/configure-network-mounts.yml"
+  - include: "{{ path.tasks }}/setup-gluster.yml"
+    when: inventory_hostname not in groups['gluster']

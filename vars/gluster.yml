@@ -1,0 +1,5 @@
+gluster_volumes:
+ - { volume: 'critical', replicas: 2 }
+ - { volume: 'backups', replicas: 2 }
+ - { volume: 'shred', replicas: 2 }
+ - { volume: 'general', replicas: 2 }
