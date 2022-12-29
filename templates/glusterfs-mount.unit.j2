@@ -1,0 +1,12 @@
+[Unit]
+After=glusterd.service
+Requires=glusterd.service
+
+[Mount]
+What=localhost:/{{ item.volume }}
+Where=/mnt/{{ item.volume }}
+Type=glusterfs
+Options=defaults,x-systemd.automount
+
+[Install]
+WantedBy=multi-user.target

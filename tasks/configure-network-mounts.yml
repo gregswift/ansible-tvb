@@ -11,7 +11,7 @@
     - glusterfs-fuse
 
 - name: Place samba credentials file for the desktop user
-  template:
+  ansible.builtin.template:
     src: "{{ path.templates }}/credentials.j2"
     dest: /etc/samba/.credentials
     owner: root
@@ -24,14 +24,34 @@
     state: directory
   loop: "{{ gluster_volumes }}"
 
-- name: Add mountpoints to /etc/fstab
-  mount:
+- name: Remove old mountpoints from /etc/fstab
+  ansible.posix.mount:
     name: "/mnt/{{ item.volume }}"
     state: present
     src: "localhost:/{{ item.volume }}"
     fstype: glusterfs
     opts: defaults
   loop: "{{ gluster_volumes }}"
+  tags:
+  - legacy-mounts
+
+- name: Place systemd unit file for automounting network filesystem
+  ansible.builtin.template:
+    src: "{{ path.templates }}/glusterfs-mount.unit.j2
+    dest: /etc/systemd/system/mnt-{{ item.volume }}.mount"
+    owner: root
+    group: root
+    mode: 0640
+  loop: "{{ gluster_volumes }}
+  notify: "reload systemd"
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Remount volumes
+  ansible.builtin.systemd:
+    service: "mnt-{{ item.volume }}.mount"
+    state: started
 
 - name: Update gnome3 bookmarks
   copy:
