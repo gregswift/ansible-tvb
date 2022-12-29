@@ -1,0 +1,6 @@
+---
+# don't actually use this yet but i had to change for f35+
+global_pkgs_inst: ['bind-utils', 'openssh-clients', 'net-tools', 'lsof',
+                   'patch', 'postfix', 'rsync', 'strace', 'nmap',
+                   'tmpwatch', 'mtr', 'vim-enhanced', 'xz', 'nano',
+                   'libselinux-python', 'bash-completion' ]

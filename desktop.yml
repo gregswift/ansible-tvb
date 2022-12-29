@@ -6,9 +6,12 @@
     - vars/global.yml
     - vars/gluster.yml
     - vars/common.private.yml
+  handlers:
+  - include: "{{ path.handlers }}"
   tasks:
   - include: "{{ path.tasks }}/common.yml"
   - include: "{{ path.tasks }}/change-user-pass.yml"
-  - include: "{{ path.tasks }}/configure-network-mounts.yml"
   - include: "{{ path.tasks }}/setup-gluster.yml"
-    when: inventory_hostname not in groups['gluster']
+  - include: "{{ path.tasks }}/setup-gluster-volumes.yml"
+    when: inventory_hostname in groups['gluster']
+  - include: "{{ path.tasks }}/configure-network-mounts.yml"

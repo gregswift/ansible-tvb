@@ -42,8 +42,8 @@
     owner: root
     group: root
     mode: 0640
-  loop: "{{ gluster_volumes }}
-  notify: "reload systemd"
+  loop: "{{ gluster_volumes }}"
+  notify: reload systemd
 
 - name: Flush handlers
   meta: flush_handlers
@@ -52,6 +52,7 @@
   ansible.builtin.systemd:
     service: "mnt-{{ item.volume }}.mount"
     state: started
+  loop: "{{ gluster_volumes }}"
 
 - name: Update gnome3 bookmarks
   copy:

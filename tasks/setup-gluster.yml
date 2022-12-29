@@ -5,39 +5,6 @@
     - glusterfs-selinux
     - glusterfs-server
 
-- community.general.lvol:
-    vg: fedora_{{ ansible_hostname }}
-    lv: data
-    size: 300G
-
-- community.general.filesystem:
-    fstype: ext4
-    dev: /dev/mapper/fedora_{{ ansible_hostname | replace('-','--') }}-data
-    opts: -L /data
-
-- ansible.builtin.file:
-    path: /data
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-
-- ansible.builtin.mount:
-    name: /data
-    src: "LABEL=/data"
-    fstype: ext4
-    state: mounted
-
-- ansible.builtin.file:
-    path: "/data/{{ item.volume }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  loop: "{{ gluster_volumes }}"
-  retries: 3
-  delay: 5
-
 - ansible.builtin.service:
     state: started
     name: glusterd
@@ -47,12 +14,3 @@
     nodes: "{{ groups['gluster'][0] }}"
   retries: 3
   delay: 5
-
-- gluster.gluster.gluster_volume:
-    state: present
-    name: "{{ item.volume }}"
-    bricks: "/data/{{ item.volume }}"
-    replicas: "{{ item.replicas }}"
-    cluster: "{{ groups['gluster'] }}"
-  run_once: yes
-  loop: "{{ gluster_volumes }}"
