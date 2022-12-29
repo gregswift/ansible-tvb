@@ -1,9 +1,15 @@
 ---
 - name: reload firewalld
-  command: firewall-cmd --reload
+  ansible.builtin.command: firewall-cmd --reload
 
 - name: sync cobbler
-  command: cobbler sync
+  ansible.builtin.command: cobbler sync
 
 - name: restart cobblerd
-  service: name=cobblerd state=restarted
+  ansible.builtin.service:
+    name: cobblerd
+    state: restarted
+
+- name: reload systemd
+  ansible.builtin.systemd:
+    daemon-reload: yes
